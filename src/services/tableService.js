@@ -18,5 +18,24 @@ const insertEntity = (tableName, entity) => {
       );
     });
 };
+
+const queryEntities = (tableName, query) => {
+  return new Promise((resolve, reject) => {
+    table.queryEntities(
+      tableName,
+      query,
+      null,
+      { payloadFormat: "application/json;odata=nometadata" },
+      function (error, result, response) {
+        if (error) {
+          reject(error);
+        }
+
+        resolve(response.body);
+      }
+    );
+  });
+};
   
 exports.insertEntity = insertEntity
+exports.queryEntities = queryEntities
