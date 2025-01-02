@@ -7,7 +7,7 @@ async function createPost(context, req) {
     if (!req.body) {
       return {
         status: 400,
-        body: "Please pass a request body ",
+        body: "Please pass a request body",
       };
     }
     const { blog, title, content } = await req.json();
@@ -18,14 +18,14 @@ async function createPost(context, req) {
       };
     }
 
-    const blogEntity = {
+    const postEntity = {
       PartitionKey: blog,
       RowKey: uuidv6(),
       title: title,
       content: content,
     };
 
-    const createdPost = await insertEntity(process.env.AZURE_TABLE_NAME, blogEntity);
+    const createdPost = await insertEntity(process.env.AZURE_TABLE_NAME, postEntity);
     return {
       jsonBody: createdPost,
       status: 200
@@ -35,9 +35,10 @@ async function createPost(context, req) {
   }
 }
 
-app.http("post", {
+app.http("createPost", {
   methods: ["POST"],
   authLevel: "anonymous",
+  route: "post",
   handler: async (req, context) => {
     return await createPost(context, req);
   },
